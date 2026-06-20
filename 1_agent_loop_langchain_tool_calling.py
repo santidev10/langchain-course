@@ -69,9 +69,12 @@ def run_agent(question: str):
         print(f"\n--- Iteration {iteration} ---")
         ai_message = llm_with_tools.invoke(messages)
         tool_calls = ai_message.tool_calls
+
+        # If not tool calls, this is the final answer
         if not tool_calls:
             print(f"\nFinal Answer: {ai_message.content}")
             return ai_message.content
+        
         # Process only the FIRST tool call - force one tool per iteration
         tool_call = tool_calls[0]
         tool_name = tool_call.get("name")
